@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class LoginView extends javax.swing.JFrame {
+public class LoginView extends JFrame {
 
     private JTextField txtUsuario;
     private JPasswordField txtPassword;
@@ -162,12 +162,15 @@ public class LoginView extends javax.swing.JFrame {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                String nombreEmpleado = rs.getString("nombre");
                 JOptionPane.showMessageDialog(this, 
-                    "Bienvenido " + rs.getString("nombre") + "!", 
+                    "Bienvenido " + nombreEmpleado + "!", 
                     "Acceso exitoso", 
                     JOptionPane.INFORMATION_MESSAGE);
+                
+                // Cerrar login y abrir menú principal
                 this.dispose();
-                // new MenuPrincipal().setVisible(true);
+                new PanelPrincipal(nombreEmpleado).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, 
                     "Usuario o contraseña incorrectos.", 
@@ -181,17 +184,5 @@ public class LoginView extends javax.swing.JFrame {
                 "Error de conexión", 
                 JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        EventQueue.invokeLater(() -> {
-            new LoginView().setVisible(true);
-        });
     }
 }
